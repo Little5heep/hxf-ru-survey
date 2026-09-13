@@ -1,7 +1,7 @@
-# Анкета · Академия Ху Сяофэя
+# Russian study-tour survey
 
-Мобильная анкета для российской группы (следующий год).
+Live: https://survey.hxfdaoyin.com
 
-Открыть страницу и заполнить на телефоне. Анонимно. Любой вопрос можно пропустить.
+Backup: https://little5heep.github.io/hxf-ru-survey/
 
-Если нужна отправка на почту организатора, добавьте в ссылку: `?to=email@example.com`
+Anonymous mobile questionnaire for next year's programme. Submissions are emailed to the organiser.

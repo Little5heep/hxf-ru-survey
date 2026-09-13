@@ -102,7 +102,7 @@ function render(){
   if(p.kind === 'done'){
     document.getElementById('htitle').textContent = 'Готово';
     main.innerHTML = `<div class="ok"><p><b>Спасибо. Ответы записаны. Можно закрыть страницу.</b></p>
-      <p class="note">Если отправка не прошла, скопируйте ответы и пришлите переводчику в WeChat.</p>
+      <p class="note">Если отправка не прошла, скопируйте ответы и пришлите переводчику в WhatsApp.</p>
       <textarea id="sum" readonly></textarea>
       <button class="copy" type="button" id="copy">Скопировать ответы</button>
       <div class="err" id="msg"></div></div>`;
@@ -166,10 +166,6 @@ function renderQ(q){
 function bindQ(ids){
   ids.forEach(id => {
     const q = qIndex[id];
-    // restore + bind
-    document.querySelectorAll(`input[name="${id}"], input[name="${id}_age"], input[name="${id}_gender"]`).forEach(inp => {
-      inp.addEventListener('change', () => paint(inp.name));
-    });
     document.querySelectorAll(`input[name="${id}"]`).forEach(inp => {
       inp.onchange = () => {
         if(q.type === 'multi'){
@@ -254,24 +250,24 @@ function formatSummary(){
 }
 
 async function submitAnswers(summary){
-  const params = new URLSearchParams(location.search);
-  const to = params.get('to') || params.get('email') || '';
-  const payload = { _subject: 'Анкета российской группы', _captcha: 'false', summary, json: JSON.stringify(answers) };
+  const payload = {
+    _subject: 'Анкета российской группы — survey.hxfdaoyin.com',
+    _captcha: 'false',
+    _template: 'box',
+    summary,
+    json: JSON.stringify(answers)
+  };
+  try{ localStorage.setItem('survey_last', summary); }catch(e){}
+  const msg = document.getElementById('msg');
   try{
-    localStorage.setItem('survey_last', summary);
-  }catch(e){}
-  if(!to) return;
-  try{
-    const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(to), {
-      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(payload)
+    const res = await fetch('https://formsubmit.co/ajax/zhaolongxi.malay@gmail.com', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
     });
-    const msg = document.getElementById('msg');
-    if(res.ok) msg.textContent = 'Ответы отправлены организатору.';
-    else msg.textContent = 'Автоотправка не удалась — скопируйте текст.';
-  }catch(e){
-    const msg = document.getElementById('msg');
-    if(msg) msg.textContent = 'Автоотправка не удалась — скопируйте текст.';
-  }
+    if(res.ok) { if(msg) msg.textContent = 'Ответы отправлены.'; return; }
+  }catch(e){}
+  if(msg) msg.textContent = 'Если письмо не ушло, скопируйте ответы ниже.';
 }
 
 render();
