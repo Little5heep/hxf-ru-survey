@@ -255,6 +255,7 @@ async function submitAnswers(summary){
     _subject: 'Анкета российской группы — survey.hxfdaoyin.com',
     _captcha: 'false',
     _template: 'box',
+    _url: location.href,
     summary,
     json: JSON.stringify(answers)
   };
@@ -266,7 +267,11 @@ async function submitAnswers(summary){
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify(payload)
     });
-    if(res.ok) { if(msg) msg.textContent = 'Ответы отправлены.'; return; }
+    const data = await res.json().catch(() => ({}));
+    if(res.ok && (data.success === true || data.success === 'true')){
+      if(msg) msg.textContent = 'Ответы отправлены.';
+      return;
+    }
   }catch(e){}
   if(msg) msg.textContent = 'Если письмо не ушло, скопируйте ответы ниже.';
 }
