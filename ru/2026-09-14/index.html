@@ -256,25 +256,33 @@ function formatSummary(){
   return lines.join('\n');
 }
 
+async function postMail(fields){
+  const res = await fetch('https://formsubmit.co/ajax/service@hxfdaoyin.com', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify(Object.assign({
+      _subject: 'Анкета российской группы — survey.hxfdaoyin.com',
+      _captcha: 'false',
+      _template: 'box',
+      _url: location.href
+    }, fields))
+  });
+  const data = await res.json().catch(() => ({}));
+  return res.ok && (data.success === true || data.success === 'true');
+}
+
 async function submitAnswers(summary){
-  const payload = {
-    _subject: 'Анкета российской группы — survey.hxfdaoyin.com',
-    _captcha: 'false',
-    _template: 'box',
-    _url: location.href,
-    summary,
-    json: JSON.stringify(answers)
-  };
+  const json = JSON.stringify(answers);
   try{ localStorage.setItem('survey_last', summary); }catch(e){}
   const msg = document.getElementById('msg');
   try{
-    const res = await fetch('https://formsubmit.co/ajax/service@hxfdaoyin.com', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json().catch(() => ({}));
-    if(res.ok && (data.success === true || data.success === 'true')){
+    if(await postMail({summary, json})){
+      if(msg) msg.textContent = 'Ответы отправлены.';
+      return;
+    }
+    const a = await postMail({summary});
+    const b = await postMail({_subject: 'Анкета российской группы — JSON', json});
+    if(a || b){
       if(msg) msg.textContent = 'Ответы отправлены.';
       return;
     }
