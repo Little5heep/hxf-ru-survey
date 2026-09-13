@@ -10,14 +10,14 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:#ece4d6;color:var(--ink);font:16px/1.45 -apple-system,"PingFang SC","PT Sans",Arial,sans-serif}
 body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-.wrap{max-width:560px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column}
-header{padding:14px 18px 10px;border-bottom:1px solid var(--line);background:#fbf6ec;position:sticky;top:0;z-index:5}
+.wrap{max-width:560px;margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--paper);display:flex;flex-direction:column;overflow-x:hidden}
+header{padding:14px 18px 10px;border-bottom:1px solid var(--line);background:#fbf6ec;position:sticky;top:0;z-index:5;min-width:0}
+main{flex:1;padding:16px 16px 24px;min-width:0;overflow-wrap:anywhere}
 .kicker{margin:0;color:var(--tea);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .h1{margin:4px 0 0;font-size:18px;font-weight:750}
 .bar{height:6px;background:#eadfce;border-radius:99px;margin-top:10px;overflow:hidden}
 .bar>i{display:block;height:100%;width:0;background:var(--tea);transition:width .2s}
 .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}
-main{flex:1;padding:16px 16px 24px}
 .sec{color:var(--cin);font-weight:750;font-size:13px;letter-spacing:.04em;margin:0 0 6px}
 .note{color:var(--muted);font-size:13.5px;margin:0 0 14px}
 .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
@@ -90,7 +90,7 @@ function render(){
   if(p.kind === 'intro'){
     document.getElementById('htitle').textContent = 'Анкета';
     main.innerHTML = `<div class="hero">
-      <h1 style="margin:0 0 8px;font-size:22px">Анкета для программы следующего года</h1>
+      <h1 style="margin:0 0 8px;font-size:22px;line-height:1.3">Анкета для программы следующего года</h1>
       <p class="note">Международная академия оздоровления Ху Сяофэя · анонимно</p>
       <span class="pill">20–25 мин</span><span class="pill">можно пропускать</span>
       <p>Дорогие участники, благодарим вас за то, что приехали в Китай и занимаетесь вместе с Академией.</p><p>Эта анкета нужна, чтобы сделать программу следующего года более подходящей для таких учеников, как вы. Правильных ответов нет: написать «не понравилось» так же полезно, как написать «понравилось».</p><p>Подписываться не нужно. Любой вопрос можно оставить пустым. Если выбираете «Другое» — напишите конкретнее.</p>
