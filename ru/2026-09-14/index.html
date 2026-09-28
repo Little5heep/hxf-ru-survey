@@ -259,37 +259,62 @@ function formatSummary(){
   return lines.join('\n');
 }
 
-async function postMail(fields){
-  const res = await fetch('https://formsubmit.co/ajax/service@hxfdaoyin.com', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body: JSON.stringify(Object.assign({
-      _subject: 'Анкета российской группы — survey.hxfdaoyin.com',
-      _captcha: 'false',
-      _template: 'box',
-      _url: location.href
-    }, fields))
-  });
-  const data = await res.json().catch(() => ({}));
-  return res.ok && (data.success === true || data.success === 'true');
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbyUSQjZQ-DaxJUYgO7oOPx4FTC3yURuqeDX7bHbVioTjIB4jzIi1u3Lxb4G0aa6S5reCQ/exec";
+const SHEET_TOKEN = "4349fa9c45f1e77f82f60fee3ef4b515f85c3fe6da1695b3";
+const SURVEY_LANG = "ru";
+
+function surveyClientId(){
+  try {
+    let id = sessionStorage.getItem('survey_client');
+    if(!id){
+      id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+      sessionStorage.setItem('survey_client', id);
+    }
+    return id;
+  } catch(e) {
+    return String(Date.now());
+  }
+}
+
+async function postSheet(summary){
+  if(!SHEET_URL || !SHEET_TOKEN) return null;
+  const payload = {
+    token: SHEET_TOKEN,
+    lang: SURVEY_LANG,
+    client_id: surveyClientId(),
+    summary: summary,
+    json: answers
+  };
+  try {
+    const res = await fetch(SHEET_URL, {
+      method: 'POST',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(data && data.ok === true && data.row) return data;
+  } catch(e) {}
+  try {
+    const url = SHEET_URL + (SHEET_URL.indexOf('?') >= 0 ? '&' : '?')
+      + 'token=' + encodeURIComponent(SHEET_TOKEN)
+      + '&lang=' + encodeURIComponent(SURVEY_LANG)
+      + '&client_id=' + encodeURIComponent(payload.client_id);
+    const check = await fetch(url, { method: 'GET', redirect: 'follow' });
+    const data = await check.json();
+    if(data && data.ok === true && data.row) return data;
+  } catch(e) {}
+  return null;
 }
 
 async function submitAnswers(summary){
-  const json = JSON.stringify(answers);
   try{ localStorage.setItem('survey_last', summary); }catch(e){}
   const msg = document.getElementById('msg');
-  try{
-    if(await postMail({summary, json})){
-      if(msg) msg.textContent = 'Ответы отправлены.';
-      return;
-    }
-    const a = await postMail({summary});
-    const b = await postMail({_subject: 'Анкета российской группы — JSON', json});
-    if(a || b){
-      if(msg) msg.textContent = 'Ответы отправлены.';
-      return;
-    }
-  }catch(e){}
+  const saved = await postSheet(summary);
+  if(saved){
+    if(msg) msg.textContent = 'Ответы отправлены.';
+    return;
+  }
   if(msg) msg.textContent = 'Если письмо не ушло, скопируйте ответы ниже.';
 }
 
