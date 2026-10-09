@@ -48,9 +48,6 @@ select{width:100%;font:16px/1.4 inherit;padding:10px;border-radius:10px;border:1
 .ok{background:var(--soft);border:1px solid #c9d9ce;border-radius:14px;padding:16px}
 .copy{margin-top:12px;width:100%;height:46px;border:0;border-radius:12px;background:var(--ink);color:#f4eadb;font-weight:750}
 .err{color:var(--cin);font-size:13px;margin-top:8px}
-.codewrap{margin:12px 0;padding:12px;border:1px dashed var(--tea);border-radius:12px;background:#fff}
-.codelabel{font-size:13px;color:var(--muted)}
-.code{font-size:28px;font-weight:750;letter-spacing:.08em;min-height:1.2em;margin:6px 0;word-break:break-all}
 </style>
 </head>
 <body>
@@ -65,9 +62,9 @@ select{width:100%;font:16px/1.4 inherit;padding:10px;border-radius:10px;border:1
 <div class="nav" id="nav"></div>
 </div>
 <script>
-const DATA = [{"id": "q1", "n": 1, "type": "single", "title": "El año que viene, si hubiera estas tres posibilidades, ¿cuál prefiere?", "hint": "una respuesta", "extra_long": "Si quiere, escriba por qué prefiere esta.", "opts": [{"v": "current", "l": "Como esta vez: varias ciudades, y 2 o 3 días en cada lugar."}, {"v": "deep", "l": "Menos ciudades, y 4 o 5 días en cada lugar, para conocer mejor la ciudad y profundizar en las prácticas."}, {"v": "split", "l": "Separar el turismo y la práctica: una parte para ver ciudades y lugares, y otra para dedicarse a la práctica en un lugar de vacaciones."}]}, {"id": "q2", "n": 2, "type": "single", "title": "¿Qué orden prefiere?", "hint": "una respuesta", "opts": ["Primero viajar 3 o 4 días, y el resto practicar en el lugar de vacaciones.", "Primero practicar 3 o 4 días en el lugar de vacaciones, y el resto viajar.", "Primero viajar cerca de la mitad del tiempo, y después practicar.", "Primero practicar cerca de la mitad del tiempo, y después viajar."]}, {"id": "q3", "n": 3, "type": "single", "title": "Sin contar los vuelos internacionales, ¿cuántos días le parecen adecuados?", "hint": "una respuesta", "opts": ["8–10 días", "11–13 días", "Unos 14 días, como esta vez", "15 días o más"]}, {"id": "q4", "n": 4, "type": "single", "title": "El año que viene, ¿cómo prefiere alojarse?", "hint": "una respuesta", "opts": ["En un hotel mejor, no en la montaña ni en un templo.", "En la montaña o en un templo taoísta, en recogimiento; unas condiciones sencillas están bien.", "Las dos: 1 o 2 noches en la montaña o en el templo, y el resto en un hotel.", "Las dos: 3 o 4 noches en la montaña o en el templo, y el resto en un hotel.", "Las dos: cerca de la mitad de las noches en la montaña o en el templo.", "Las dos: la mayoría de las noches en la montaña o en el templo."]}, {"id": "q5", "n": 5, "type": "single", "title": "Si el hotel es claramente mejor que esta vez (cama, baño y silencio), ¿cuánto añadiría, aparte del precio de este viaje? En dólares de Estados Unidos. Si prefiere el recogimiento y no necesita un hotel mejor, elija «No hace falta añadir».", "hint": "una respuesta", "opts": ["No hace falta añadir; que siga como ahora", "Hasta 200 dólares", "Unos 400 dólares", "Unos 800 dólares", "1000 dólares o más", "Prefiero no responder"]}, {"id": "q6", "n": 6, "type": "line", "title": "La próxima vez, ¿qué práctica quiere hacer? Escriba el nombre. Puede ser una de este viaje o una que todavía no ha practicado.", "note": "Por ejemplo: los doce ejercicios, los nueve movimientos, los ocho movimientos, la postura de pie, el taichí, u otra."}, {"id": "q7", "n": 7, "type": "multi_fill", "title": "El año que viene, ¿qué ciudad quiere visitar? Escriba una; como máximo, dos.", "fills": ["Ciudad", "Segunda ciudad, si quiere"]}, {"id": "q8", "n": 8, "type": "multi_fill", "title": "El año que viene, ¿qué lugar quiere ver? Escriba uno; como máximo, dos.", "fills": ["Lugar", "Segundo lugar, si quiere"]}, {"id": "q9", "n": 9, "type": "single", "allowOther": true, "title": "De las prácticas de este viaje, ¿cuál le ha parecido la mejor?", "hint": "una respuesta", "opts": ["Los Doce Ejercicios de Xiangudong para la Longevidad", "Los Nueve Movimientos de Yang Jizhou", "Los Ocho Movimientos de la Porcelana Azul", "Más o menos iguales", {"v": "other", "l": "Otra"}]}, {"id": "q10", "n": 10, "type": "single", "title": "De este viaje, ¿qué ciudad le gustó más?", "hint": "una respuesta", "opts": ["Jinhua", "Pingyang", "Quzhou", "Jingdezhen", "Huangshan", "Shanghai", "Más o menos iguales"]}, {"id": "q11", "n": 11, "type": "single", "allowOther": true, "title": "De este viaje, ¿qué lugar le gustó más?", "hint": "una respuesta", "opts": ["Templo de Huang Daxian", "Templo de Xiangudong", "Hospital de medicina china de Quzhou", "Cerámica de Jingdezhen", "Hongcun o la calle antigua de Tunxi", "Huangshan", "Museo del té Xieyuda", "Más o menos iguales", {"v": "other", "l": "Otro"}]}, {"id": "q12", "n": 12, "type": "single", "title": "Las cenas de gala de este viaje, ¿qué le parecieron?", "hint": "una respuesta", "opts": ["Muy mal", "Más bien mal", "Regular", "Más bien bien", "Muy bien", "Casi no participé"]}, {"id": "q13", "n": 13, "type": "single", "title": "Los traslados en autobús entre ciudades, ¿qué le parecieron?", "hint": "una respuesta", "note": "En este viaje hubo tramos de unas 5 horas (Jinhua–Pingyang y Pingyang–Quzhou) y uno de unas 6 horas (Huangshan–Shanghai).", "opts": ["Muy mal", "Más bien mal", "Regular", "Más bien bien", "Muy bien"]}, {"id": "q14", "n": 14, "type": "long", "title": "Si quiere añadir algo, escríbalo aquí: las cenas de gala, los traslados, lo que le gustó o no le gustó, u otras ideas para el viaje."}];
-const PAGES = [{"id": "intro", "kind": "intro"}, {"id": "p1", "sec": "El año que viene · El recorrido", "note": "Esta vez fueron 14 días, con noche en Jinhua, Pingyang, Quzhou, Jingdezhen, Huangshan y Shanghai. En la mayoría de los lugares, la estancia fue de 2 o 3 días.", "q": ["q1"]}, {"id": "p2", "if": "split", "sec": "El año que viene · El orden", "q": ["q2"]}, {"id": "p3", "sec": "El año que viene · Días y alojamiento", "q": ["q3", "q4", "q5"]}, {"id": "p4", "sec": "El año que viene · Práctica y lugares", "q": ["q6", "q7", "q8"]}, {"id": "p5", "sec": "Este viaje", "q": ["q9", "q10", "q11", "q12", "q13", "q14"]}, {"id": "done", "kind": "done"}];
-const UI = {"formName": "Cuestionario", "anon": "anónimo", "start": "Empezar", "next": "Siguiente", "send": "Enviar", "back": "Atrás", "done": "Listo", "pillTime": "alrededor de 8 min", "pillSkip": "se puede saltar", "otherPh": "Escriba cuál", "npsPh": "Aclaración", "age": "Edad", "gender": "Sexo", "summaryHead": "CUESTIONARIO · Academia Hu Xiaofei", "ageBit": "edad", "genderBit": "sexo", "otherBit": "otro", "failHint": "Si el envío no salió, copie las respuestas y mándelas al intérprete por WhatsApp.", "copy": "Copiar respuestas", "copied": "Copiado.", "copyManual": "Seleccione el texto y cópielo a mano.", "sent": "Respuestas enviadas.", "notSent": "Si el mensaje no salió, copie las respuestas de abajo.", "codeLabel": "Su código de descuento para la escuela en línea", "codePending": "El código todavía no está listo.", "codeCopy": "Copiar el código", "pageTitle": "Cuestionario · Academia Hu Xiaofei"};
+const DATA = [{"id": "q1", "n": 1, "type": "single", "title": "El año que viene, si hubiera estas tres posibilidades, ¿cuál prefiere?", "hint": "una respuesta", "extra_long": "Si quiere, escriba por qué prefiere esta.", "opts": [{"v": "current", "l": "Como esta vez: varias ciudades, y 2 o 3 días en cada lugar."}, {"v": "deep", "l": "Menos ciudades, y 4 o 5 días en cada lugar, para conocer mejor la ciudad y profundizar en las prácticas."}, {"v": "split", "l": "Separar el turismo y la práctica: una parte para ver ciudades y lugares, y otra para dedicarse a la práctica en un lugar de vacaciones."}]}, {"id": "q2", "n": 2, "type": "single", "title": "Sin contar los vuelos internacionales, ¿cuántos días le parecen adecuados?", "hint": "una respuesta", "opts": ["8–10 días", "11–13 días", "Unos 14 días, como esta vez", "15 días o más"]}, {"id": "q3", "n": 3, "type": "single", "title": "El año que viene, ¿cómo prefiere alojarse?", "hint": "una respuesta", "opts": ["En un hotel mejor, no en la montaña ni en un templo.", "En la montaña o en un templo taoísta, en recogimiento; unas condiciones sencillas están bien.", "Las dos: 1 o 2 noches en la montaña o en el templo, y el resto en un hotel.", "Las dos: 3 o 4 noches en la montaña o en el templo, y el resto en un hotel.", "Las dos: cerca de la mitad de las noches en la montaña o en el templo.", "Las dos: la mayoría de las noches en la montaña o en el templo."]}, {"id": "q4", "n": 4, "type": "single", "title": "Si el hotel es claramente mejor que esta vez (cama, baño y silencio), ¿cuánto añadiría, aparte del precio de este viaje? En dólares de Estados Unidos. Si prefiere el recogimiento y no necesita un hotel mejor, elija «No hace falta añadir».", "hint": "una respuesta", "opts": ["No hace falta añadir; que siga como ahora", "Hasta 200 dólares", "Unos 400 dólares", "Unos 800 dólares", "1000 dólares o más", "Prefiero no responder"]}, {"id": "q5", "n": 5, "type": "multi", "allowOther": true, "title": "La próxima vez, ¿qué quiere practicar? Puede ser una de este viaje o una que todavía no ha practicado.", "hint": "se puede elegir varias", "note": "Si quiere un nombre concreto que no está en la lista, elija «Otra» y escríbalo.", "opts": ["Qigong para la salud", "Daoyin yangsheng gong", "Recetas de daoyin para la salud (serie de prescripciones: por ejemplo, bajar la tensión, bajar el azúcar, humedecer los pulmones, fortalecer los riñones, insomnio)", "Postura de pie (zhan zhuang)", "Taichí", "Igual que este viaje", {"v": "other", "l": "Otra"}]}, {"id": "q6", "n": 6, "type": "multi_fill", "title": "El año que viene, ¿a qué ciudad quiere ir, y qué le gustaría experimentar allí?", "fills": ["Ciudad", "Qué le gustaría experimentar"]}, {"id": "q7", "n": 7, "type": "single", "allowOther": true, "title": "De las prácticas de este viaje, ¿cuál le ha parecido la mejor?", "hint": "una respuesta", "opts": ["Los Doce Ejercicios de Xiangudong para la Longevidad", "Los Nueve Movimientos de Yang Jizhou", "Los Ocho Movimientos de la Porcelana Azul", "Más o menos iguales", {"v": "other", "l": "Otra"}]}, {"id": "q8", "n": 8, "type": "scores", "maxScore": 5, "title": "Estas ciudades del viaje. Ponga una nota a cada una.", "note": "De 0 a 5. 5 es la nota más alta.", "rows": ["Jinhua", "Quzhou", "Jingdezhen", "Huangshan", "Shanghai"]}, {"id": "q9", "n": 9, "type": "single", "allowOther": true, "title": "De este viaje, ¿qué lugar le gustó más?", "hint": "una respuesta", "opts": ["Templo de Huang Daxian", "Templo de Xiangudong", "Hospital de medicina china de Quzhou", "Cerámica de Jingdezhen", "Hongcun o la calle antigua de Tunxi", "Huangshan", "Museo del té Xieyuda", "Más o menos iguales", {"v": "other", "l": "Otro"}]}, {"id": "q10", "n": 10, "type": "single", "title": "Las cenas de gala de este viaje, ¿qué le parecieron?", "hint": "una respuesta", "opts": ["Muy mal", "Más bien mal", "Regular", "Más bien bien", "Muy bien", "Casi no participé"]}, {"id": "q11", "n": 11, "type": "single", "title": "En este viaje hubo 3 trayectos largos en autobús, de unas 5 a 8 horas. ¿Cuánto es lo máximo que puede aceptar en un trayecto?", "hint": "una respuesta", "opts": ["3 horas o menos", "De 4 a 6 horas", "7 horas o más"]}, {"id": "q12", "n": 12, "type": "long", "title": "Si quiere añadir algo, escríbalo aquí: las cenas de gala, los traslados, lo que le gustó o no le gustó, u otras ideas para el viaje."}];
+const PAGES = [{"id": "intro", "kind": "intro"}, {"id": "p1", "sec": "El año que viene · El recorrido", "note": "Esta vez fueron 14 días, con noche en Jinhua, Pingyang, Quzhou, Jingdezhen, Huangshan y Shanghai. En la mayoría de los lugares, la estancia fue de 2 o 3 días.", "q": ["q1"]}, {"id": "p2", "sec": "El año que viene · Días y alojamiento", "q": ["q2", "q3", "q4"]}, {"id": "p3", "sec": "El año que viene · Práctica y ciudad", "q": ["q5", "q6"]}, {"id": "p4", "sec": "Este viaje", "q": ["q7", "q8", "q9", "q10", "q11", "q12"]}, {"id": "done", "kind": "done"}];
+const UI = {"formName": "Cuestionario", "anon": "anónimo", "start": "Empezar", "next": "Siguiente", "send": "Enviar", "back": "Atrás", "done": "Listo", "pillTime": "alrededor de 8 min", "pillSkip": "se puede saltar", "otherPh": "Escriba cuál", "npsPh": "Aclaración", "age": "Edad", "gender": "Sexo", "summaryHead": "CUESTIONARIO · Academia Hu Xiaofei", "ageBit": "edad", "genderBit": "sexo", "otherBit": "otro", "failHint": "Si el envío no salió, copie las respuestas y mándelas al intérprete por WhatsApp.", "copy": "Copiar respuestas", "copied": "Copiado.", "copyManual": "Seleccione el texto y cópielo a mano.", "sent": "Respuestas enviadas.", "notSent": "Si el mensaje no salió, copie las respuestas de abajo.", "pageTitle": "Cuestionario · Academia Hu Xiaofei"};
 const answers = {};
 let idx = 0;
 const qIndex = Object.fromEntries(DATA.map(q => [q.id, q]));
@@ -108,12 +105,6 @@ function render(){
   if(p.kind === 'done'){
     document.getElementById('htitle').textContent = UI.done;
     main.innerHTML = `<div class="ok"><p><b>Gracias. Las respuestas quedaron registradas. Ya puede cerrar la página.</b></p>
-      <div class="codewrap" id="codewrap">
-        <div class="codelabel">${esc(UI.codeLabel)}</div>
-        <div class="code" id="codebox"></div>
-        <p class="note" id="codenote">${esc(UI.codePending)}</p>
-        <button class="copy" type="button" id="copycode" style="display:none">${esc(UI.codeCopy)}</button>
-      </div>
       <p class="note">${esc(UI.failHint)}</p>
       <textarea id="sum" readonly></textarea>
       <button class="copy" type="button" id="copy">${esc(UI.copy)}</button>
@@ -125,12 +116,6 @@ function render(){
     document.getElementById('copy').onclick = async () => {
       try { await navigator.clipboard.writeText(sum); document.getElementById('msg').textContent = UI.copied; }
       catch(e){ document.getElementById('sum').select(); document.getElementById('msg').textContent = UI.copyManual; }
-    };
-    document.getElementById('copycode').onclick = async () => {
-      const text = (document.getElementById('codebox').textContent || '').trim();
-      if(!text) return;
-      try { await navigator.clipboard.writeText(text); document.getElementById('msg').textContent = UI.copied; }
-      catch(e){ document.getElementById('msg').textContent = UI.copyManual; }
     };
     submitAnswers(sum);
     return;
@@ -181,6 +166,11 @@ function renderQ(q){
     body = `<div class="nps">${[...Array(11).keys()].map(n=>`<button type="button" data-nps="${q.id}" data-n="${n}">${n}</button>`).join('')}</div>
       <div class="npscap"><span>${esc(q.left||'')}</span><span>${esc(q.right||'')}</span></div>
       <input class="other" data-other="${q.id}" placeholder="${esc(UI.npsPh)}">`;
+  } else if(q.type === 'scores'){
+    const max = q.maxScore == null ? 5 : q.maxScore;
+    body = (q.rows||[]).map((r,ri) => `<div class="row"><b>${esc(r)}</b><div class="nps">${
+      [...Array(max+1).keys()].map(n=>`<button type="button" data-score="${q.id}" data-row="${ri}" data-n="${n}">${n}</button>`).join('')
+    }</div></div>`).join('');
   } else if(q.type === 'multi_fill'){
     body = q.fills.map((f,i)=>`<div class="row"><b>${esc(f)}</b><input class="fill" data-fill="${q.id}" data-i="${i}"></div>`).join('');
   } else if(q.type === 'profile'){
@@ -200,11 +190,13 @@ function bindQ(ids){
           const max = q.max || 99;
           let checked = [...document.querySelectorAll(`input[name="${id}"]:checked`)].map(x=>x.value);
           if(checked.length > max){ inp.checked = false; checked = checked.filter(v=>v!==inp.value); }
-          answers[id] = { v: checked, other: (answers[id]&&answers[id].other)||'' };
+          const showOther = checked.indexOf('other') >= 0;
+          const othBox = document.querySelector(`[data-other="${id}"]`);
+          if(othBox && !showOther) othBox.value = '';
+          answers[id] = { v: checked, other: showOther ? ((answers[id]&&answers[id].other)||'') : '' };
         } else {
           const keep = (inp.value === 'other') ? ((answers[id]&&answers[id].other)||'') : '';
           answers[id] = { v: inp.value, other: keep };
-          if(id==='q1' && inp.value !== 'split') delete answers.q2;
           const oth = document.querySelector(`[data-other="${id}"]`);
           if(oth && inp.value !== 'other') oth.value = '';
         }
@@ -220,6 +212,12 @@ function bindQ(ids){
       const rows = {};
       document.querySelectorAll(`[data-mx="${id}"]`).forEach(x => { if(x.value) rows[q.rows[x.dataset.row]] = x.value; });
       answers[id] = Object.assign({}, answers[id], {matrix: rows});
+    });
+    document.querySelectorAll(`[data-score="${id}"]`).forEach(b => b.onclick = () => {
+      const scores = Object.assign({}, (answers[id] && answers[id].scores) || {});
+      scores[q.rows[b.dataset.row]] = b.dataset.n;
+      answers[id] = Object.assign({}, answers[id], {scores});
+      document.querySelectorAll(`[data-score="${id}"][data-row="${b.dataset.row}"]`).forEach(x => x.classList.toggle('on', x===b));
     });
     document.querySelectorAll(`[data-nps="${id}"]`).forEach(b => b.onclick = () => {
       answers[id] = Object.assign({}, answers[id], {v: b.dataset.n});
@@ -254,6 +252,12 @@ function restore(q){
   if(a.extra){ const t=document.querySelector(`[data-extra="${q.id}"]`); if(t) t.value=a.extra; }
   if(a.matrix){ document.querySelectorAll(`[data-mx="${q.id}"]`).forEach(s => { const lab=q.rows[s.dataset.row]; if(a.matrix[lab]) s.value=a.matrix[lab]; }); }
   if(q.type==='nps' && a.v!=null){ document.querySelectorAll(`[data-nps="${q.id}"]`).forEach(b => b.classList.toggle('on', b.dataset.n===String(a.v))); }
+  if(a.scores){
+    document.querySelectorAll(`[data-score="${q.id}"]`).forEach(b => {
+      const lab = q.rows[b.dataset.row];
+      b.classList.toggle('on', String(a.scores[lab])===String(b.dataset.n));
+    });
+  }
   if(a.fills){ document.querySelectorAll(`[data-fill="${q.id}"]`).forEach((inp,i)=>{ if(a.fills[i]) inp.value=a.fills[i]; }); }
   if(a.age){ document.querySelectorAll(`input[name="${q.id}_age"]`).forEach(inp => { if(inp.value===a.age) inp.checked=true; }); paint(q.id+'_age'); }
   if(a.gender){ document.querySelectorAll(`input[name="${q.id}_gender"]`).forEach(inp => { if(inp.value===a.gender) inp.checked=true; }); paint(q.id+'_gender'); }
@@ -282,6 +286,7 @@ function formatSummary(){
     if(Array.isArray(a.v)) bits.push(a.v.map(v => choiceText(q, v)).join('; '));
     else if(a.v!=null && a.v!=='') bits.push(choiceText(q, a.v));
     if(a.matrix) Object.entries(a.matrix).forEach(([k,v]) => bits.push(k+': '+v));
+    if(a.scores) Object.entries(a.scores).forEach(([k,v]) => bits.push(k+': '+v));
     if(a.fills) a.fills.forEach((v,i)=>(v?bits.push((q.fills?q.fills[i]:i)+': '+v):0));
     if(a.age) bits.push(UI.ageBit+': '+a.age);
     if(a.gender) bits.push(UI.genderBit+': '+a.gender);
@@ -351,21 +356,7 @@ async function submitAnswers(summary){
   try{ localStorage.setItem('survey_last_' + SURVEY_LANG, summary); }catch(e){}
   const msg = document.getElementById('msg');
   const saved = await postSheet(summary);
-  const wrap = document.getElementById('codewrap');
-  if(saved){
-    if(msg) msg.textContent = UI.sent;
-    if(saved.code){
-      const box = document.getElementById('codebox');
-      const note = document.getElementById('codenote');
-      const copyCode = document.getElementById('copycode');
-      if(box) box.textContent = saved.code;
-      if(note) note.style.display = 'none';
-      if(copyCode) copyCode.style.display = 'block';
-    }
-    return;
-  }
-  if(wrap) wrap.style.display = 'none';
-  if(msg) msg.textContent = UI.notSent;
+  if(msg) msg.textContent = saved ? UI.sent : UI.notSent;
 }
 
 render();
